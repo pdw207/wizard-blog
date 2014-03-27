@@ -3,12 +3,13 @@ require File.expand_path '../spec_helper.rb', __FILE__
 
 # Check out the cheat sheet here for capybara matchers http://www.launchacademy.com/codecabulary/learn-test-driven-development/rspec/capybara-cheat-sheet
 describe 'the greatest wizard bio of all time' do
+
   before(:each) do
     visit('/')
   end
 
   it 'has an awesome title' do
-    within(:css, "h1.responsive-headline") do
+    within("h1.responsive-headline") do
       expect(page).to have_content("I'm Faizaan the Wizard")
     end
   end
@@ -19,13 +20,13 @@ describe 'the greatest wizard bio of all time' do
   end
 
   it 'has an education from Hogwarts' do
-    within(:css, "section#resume") do
+    within("section#resume") do
       expect(page).to have_content("Hogwarts")
     end
   end
 
   it 'has a testimonial written by Adam Sheehan' do
-    within(:css, "section#testimonials") do
+    within("section#testimonials") do
       expect(page).to have_css('cite', text: 'Adam Sheehan')
     end
   end
@@ -35,12 +36,33 @@ describe 'the greatest wizard bio of all time' do
     expect(book_faizaan).to have_css('a.button', text: 'Wizard me now')
   end
 
-  it 'has 7 social media sharing links'
-  it 'has an about section'
-  it 'has a link to download the wizards resume'
-  it 'has a testimonial by Harry Potter'
-  it "has a form field with the placeholder 'I no longer want to be a vegan'"
-  it 'has a section with the id of contact'
-  it "has an h1 tag with the content 'client testimonials'"
+  it 'has 7 social media sharing links' do
+      social_links = page.find('ul.social')
+      expect(social_links).to have_css('li', count: 7)
+      links  = social_links.all('li')
+      expect(links[2]).to have_css('i.fa-google-plus')
+  end
+
+  it 'has an about section' do
+    expect(page).to have_css('section#about')
+  end
+
+  it 'has a link to download the wizards resume' do
+    expect(page).to have_css('a.button', "Download Resume")
+  end
+
+  it 'has a testimonial by Harry Potter' do
+    expect(page).to have_css('cite', text: 'Harry Potter')
+  end
+
+  it 'has a section with the id of contact' do
+    expect(page).to have_css('section#contact')
+  end
+
+  it "has an h1 tag with the content 'client testimonials'" do
+    within ('#testimonials h1') do
+      expect(page).to have_content('Client Testimonials')
+    end
+  end
 
 end
